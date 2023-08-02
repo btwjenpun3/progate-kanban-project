@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,10 @@ use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('home');
-})->name('home'); // name ditambahkan
+})->name('home');
+
+
+// Route::get('/', [HomeController::class, 'welcome']);
 
 Route::prefix('tasks')
     ->name('tasks.')
@@ -26,3 +31,9 @@ Route::prefix('tasks')
         Route::get('{id}/edit', 'edit')->name('edit');
         Route::get('create', 'create')->name('create');
     });
+
+Route::get('/halo', function () {
+    return '<h1>Halo, Ninja!</h1>';
+});
+
+Route::resource('users', UserController::class);
