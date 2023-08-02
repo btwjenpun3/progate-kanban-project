@@ -32,6 +32,16 @@ Route::prefix('tasks')
         Route::get('create', 'create')->name('create');
     });
 
+Route::prefix('tasks')
+    ->name('tasks.')
+    ->controller(TaskController::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');  // Ditambahkan
+        Route::get('{id}/edit', 'edit')->name('edit');
+    });
+
 Route::get('/halo', function () {
     return '<h1>Halo, Ninja!</h1>';
 });
