@@ -55,4 +55,19 @@ class TaskController extends Controller
 
         return view('tasks.edit', ['pageTitle' => $pageTitle, 'task' => $task]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $task = Task::find($id);
+        $task->update([
+            // data task yang berasal dari formulir
+            'name' => $request->name,
+            'detail' => $request->detail,
+            'due_date' => $request->duedate,
+            'status' => $request->status
+        ]);
+
+        // Code untuk melakukan redirect menuju GET /tasks
+        return redirect()->route('tasks.index');
+    }
 }
