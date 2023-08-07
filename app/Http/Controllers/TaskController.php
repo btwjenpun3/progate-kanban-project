@@ -27,6 +27,27 @@ class TaskController extends Controller
         return view('tasks.create', ['pageTitle' => $pageTitle]);
     }
 
+    public function store(Request $request)
+    {
+        // Code untuk proses validasi
+        $request->validate(
+            [
+                'name' => 'required',
+                'due_date' => 'required',
+                'status' => 'required',
+            ],
+            $request->all()
+        );
+        Task::create([
+            'name' => $request->name,
+            'detail' => $request->detail,
+            'due_date' => $request->due_date,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('tasks.index');
+    }
+
     public function edit($id)
     {
         $pageTitle = 'Edit Task';
@@ -34,4 +55,37 @@ class TaskController extends Controller
 
         return view('tasks.edit', ['pageTitle' => $pageTitle, 'task' => $task]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $task = Task::find($id);
+        $task->update([
+            // data task yang berasal dari formulir
+            'name' => $request->name,
+            'detail' => $request->detail,
+            'due_date' => $request->duedate,
+            'status' => $request->status
+        ]);
+
+        // Code untuk melakukan redirect menuju GET /tasks
+        return redirect()->route('tasks.index');
+    }
+
+    public function delete($id)
+    {
+        // Menyebutkan judul dari halaman yaitu "Delete Task"   
+        $pageTitle = 'Delete Task'; 
+        //  Memperoleh data task menggunakan $id
+        $task = Task::find($id);    
+        // Menghasilkan nilai return berupa file view dengan halaman dan data task di atas 
+        return view('tasks.delete', ['pageTitle' => $pageTitle, 'task' => $task]);
+    }
+
+    public function destroy($id)
+    {
+        $task = Task::find($id);
+        $task->delete();
+        // Melakukan redirect menuju tasks.index
+        return redirect()->route('tasks.index');
+    }   
 }
