@@ -41,6 +41,8 @@ Route::prefix('tasks')
         Route::post('/', 'store')->name('store');  // Ditambahkan
         Route::get('{id}/edit', 'edit')->name('edit');
         Route::put('{id}/edit', 'update')->name('update');
+        Route::get('{id}/delete', 'delete')->name('delete');
+        Route::delete('{id}/destroy', 'destroy')->name('destroy');
     });
 
 Route::get('/halo', function () {
