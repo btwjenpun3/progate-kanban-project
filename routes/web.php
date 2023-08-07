@@ -37,7 +37,7 @@ Route::prefix('tasks')
     ->controller(TaskController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
+        Route::get('/create/{status?}', 'create')->name('create');
         Route::post('/', 'store')->name('store');  // Ditambahkan
         Route::get('{id}/edit', 'edit')->name('edit');
         Route::put('{id}/edit', 'update')->name('update');
@@ -45,6 +45,8 @@ Route::prefix('tasks')
         Route::delete('{id}/destroy', 'destroy')->name('destroy');
         Route::get('progress', 'progress')->name('progress');
         Route::patch('{id}/move', 'move')->name('move');
+        Route::get('{id}/cardcomplete', 'cardComplete')->name('cardComplete');
+        Route::get('{id}/listcomplete', 'listComplete')->name('listComplete');
     });
 
 Route::get('/halo', function () {

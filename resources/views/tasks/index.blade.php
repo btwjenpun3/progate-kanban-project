@@ -24,10 +24,17 @@
         @foreach ($tasks as $index => $task)
             <div class="table-body">
                 <div class="table-body-task-name">
-                    <span
-                        class="material-icons @if ($task->status == 'completed') check-icon-completed @else check-icon @endif">
-                        check_circle
-                    </span>
+                    @if ($task->status == 'completed')
+                        <span class="material-icons check-icon-completed">
+                            check_circle
+                        </span>
+                    @else
+                        <a href="/tasks/{{ $task->id }}/listcomplete">
+                            <span class="material-icons check-icon">
+                                check_circle
+                            </span>
+                        </a>
+                    @endif
                     {{ $task->name }}
                 </div>
                 <div class="table-body-detail"> {{ $task->detail }} </div>
