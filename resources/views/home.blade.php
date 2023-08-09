@@ -7,7 +7,6 @@
         <div class="main">
             <div class="task-summary-container">
                 <h1 class="task-summary-heading">Summary of Your Tasks</h1>
-                // Tambahkan code dibawah
                 @if (Auth::check())
                     <h1 class="task-summary-greeting">
                         Hi, {{ Auth::user()->name }} !
