@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -43,6 +44,13 @@ Route::prefix('tasks')
         Route::put('{id}/edit', 'update')->name('update');
         Route::get('{id}/delete', 'delete')->name('delete');
         Route::delete('{id}/destroy', 'destroy')->name('destroy');
+    });
+
+Route::name('auth.')
+    ->controller(AuthController::class)
+    ->group(function () {
+        Route::get('signup', 'signupForm')->name('signupForm');
+        Route::post('signup', 'signup')->name('signup');
     });
 
 Route::get('/halo', function () {
