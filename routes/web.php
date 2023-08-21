@@ -17,9 +17,9 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home')->middleware('auth');
+Route::get('/', [TaskController::class, 'home'])
+    ->name('home')
+    ->middleware('auth');
 
 
 // Route::get('/', [HomeController::class, 'welcome']);
