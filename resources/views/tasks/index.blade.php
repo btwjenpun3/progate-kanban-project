@@ -25,17 +25,19 @@
         @foreach ($tasks as $index => $task)
             <div class="table-body">
                 <div class="table-body-task-name">
-                    @if ($task->status == 'completed')
-                        <span class="material-icons check-icon-completed">
-                            check_circle
-                        </span>
-                    @else
-                        <a href="/tasks/{{ $task->id }}/listcomplete">
-                            <span class="material-icons check-icon">
+                    @can('complete', $task)
+                        @if ($task->status == 'completed')
+                            <span class="material-icons check-icon-completed">
                                 check_circle
                             </span>
-                        </a>
-                    @endif
+                        @else
+                            <a href="/tasks/{{ $task->id }}/listcomplete">
+                                <span class="material-icons check-icon">
+                                    check_circle
+                                </span>
+                            </a>
+                        @endif
+                    @endcan
                     {{ $task->name }}
                 </div>
                 <div class="table-body-detail"> {{ $task->detail }} </div>
@@ -60,8 +62,12 @@
                 </div>
                 <div class="table-body-owner-name">{{ $task->user->name }}</div>
                 <div>
-                    <a href="{{ route('tasks.edit', ['id' => $task->id]) }}">Edit</a>
-                    <a href="{{ route('tasks.delete', ['id' => $task->id]) }}">Delete</a>
+                    @can('update', $task)
+                        <a href="{{ route('tasks.edit', ['id' => $task->id]) }}">Edit</a>
+                    @endcan
+                    @can('delete', $task)
+                        <a href="{{ route('tasks.delete', ['id' => $task->id]) }}">Delete</a>
+                    @endcan
                 </div>
             </div>
         @endforeach

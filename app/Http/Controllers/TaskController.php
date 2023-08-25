@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {  
@@ -74,12 +75,17 @@ class TaskController extends Controller
         $pageTitle = 'Edit Task';
         $task = Task::find($id); // Diperbarui
 
+        Gate::authorize('update', $task);
+
         return view('tasks.edit', ['pageTitle' => $pageTitle, 'task' => $task]);
     }
 
     public function update(Request $request, $id)
     {
         $task = Task::find($id);
+
+        Gate::authorize('update', $task);
+
         $task->update([
             // data task yang berasal dari formulir
             'name' => $request->name,
@@ -97,7 +103,9 @@ class TaskController extends Controller
         // Menyebutkan judul dari halaman yaitu "Delete Task"   
         $pageTitle = 'Delete Task'; 
         //  Memperoleh data task menggunakan $id
-        $task = Task::find($id);    
+        $task = Task::find($id);   
+        
+        Gate::authorize('delete', $task);
         // Menghasilkan nilai return berupa file view dengan halaman dan data task di atas 
         return view('tasks.delete', ['pageTitle' => $pageTitle, 'task' => $task]);
     }
@@ -106,6 +114,8 @@ class TaskController extends Controller
     {
         $task = Task::find($id);
         $task->delete();
+
+        Gate::authorize('delete', $task);
         // Melakukan redirect menuju tasks.index
         return redirect()->route('tasks.index');
     }   
@@ -143,6 +153,8 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($id);
 
+        Gate::authorize('move', $task);
+
         $task->update([
             'status' => $request->status,
         ]);
@@ -154,6 +166,8 @@ class TaskController extends Controller
     {
         $task = Task::find($id);
 
+        Gate::authorize('complete', $task);
+
         $task->update([
             'status' => 'completed'
         ]);
@@ -164,6 +178,8 @@ class TaskController extends Controller
     public function listComplete(Request $request, $id)
     {
         $task = Task::find($id);
+
+        Gate::authorize('complete', $task);
 
         $task->update([
             'status' => 'completed'
