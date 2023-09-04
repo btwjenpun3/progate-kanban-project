@@ -22,7 +22,7 @@
     <div>
         <p>Owner: <strong>{{ $task->user->name }}</strong></p>
     </div>
-    @can('move', $task)
+    @canany(['performAsTaskOwner'], $task)
         <div class="@if ($leftStatus) task-progress-card-left @else task-progress-card-right @endif">
             @if ($leftStatus)
                 <form action="{{ route('tasks.move', ['id' => $task->id, 'status' => $leftStatus]) }}" method="POST">

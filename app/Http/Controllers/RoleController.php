@@ -4,27 +4,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Task;
 use App\Models\Permission;
 use App\Models\RolePermission;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
-{
+{  
+    
     public function index()
     {
-        $pageTitle = 'Role Lists';
-        $roles = Role::all();
+        if(Gate::allows('viewAnyRoles', Role::class)) {
+            $roles = Role::all(); 
+        } else {
+            abort(403);
+        }
 
+        $pageTitle = 'Role Lists';                        
+      
         return view('roles.index', [
             'pageTitle' => $pageTitle,
-            'roles' => $roles,
+            'roles' => $roles,            
         ]);
     }
 
     public function create()
-    {
-        $pageTitle = 'Add Role';
-        $permissions = Permission::all();
+    {        
+        if(! Gate::denies('createNewRoles', Role::class)){
+            $permissions = Permission::all();
+        } else {
+            abort(403);
+        } 
+
+        $pageTitle = 'Add Role';  
+
         return view('roles.create', [
             'pageTitle' => $pageTitle,
             'permissions' => $permissions,
@@ -59,6 +75,11 @@ class RoleController extends Controller
     {
         $pageTitle = 'Edit Role';
         $role = Role::findOrFail($id);
+
+        if (Gate::denies('performAsTaskOwner', $role)) {
+            Gate::authorize('updateAnyRoles', Role::class);
+        }
+
         $permissions = Permission::all();
         return view('roles.edit', [
             'pageTitle' => $pageTitle,
@@ -92,6 +113,10 @@ class RoleController extends Controller
     {
         $pageTitle = 'Delete Role';
         $role = Role::findOrFail($id);
+
+        if (Gate::denies('performAsTaskOwner', $role)) {
+            Gate::authorize('deleteAnyRoles', Role::class);
+        }
 
         return view('roles.delete', [
             'pageTitle' => $pageTitle,

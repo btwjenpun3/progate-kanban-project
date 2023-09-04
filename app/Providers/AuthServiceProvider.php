@@ -6,6 +6,8 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Task; // Ditambahkan
 use App\Policies\TaskPolicy; // Ditambahkan
+use App\Models\Role; // Ditambahkan
+use App\Policies\RolePolicy; // Ditambahkan
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Task::class => TaskPolicy::class,
+        Role::class => RolePolicy::class
     ];
 
     /**

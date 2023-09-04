@@ -81,6 +81,16 @@ Route::prefix('roles')
         Route::delete('{id}/destroy', 'destroy')->name('destroy');
     });
 
+Route::prefix('users')
+    ->name('users.')
+    ->middleware('auth')
+    ->controller(UserController::class)
+    ->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('{id}/edit-role', 'editRole')->name('editRole');
+        Route::put('{id}/update-role', 'updateRole')->name('updateRole');
+    });
+
 Route::get('/halo', function () {
     return '<h1>Halo, Ninja!</h1>';
 });
